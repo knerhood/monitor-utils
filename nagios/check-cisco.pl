@@ -98,7 +98,7 @@ sub check_oid_return {
 	
 	if ( $oid_value == '' ) {
 		print "Remote device does not return data for $parameter_name\n";
-		exit(1);
+		exit(3);
 	}
 }
 
@@ -354,7 +354,7 @@ if($check_type =~ /^temp/) {
 	
 	if($sum == 0) {
 		print "fan: CRIT - No Fans are running\n";
-		exit(1);
+		exit(2);
 	}
 	
 	if($total_err != 0) {
@@ -395,7 +395,12 @@ if($check_type =~ /^temp/) {
 			$err_msg = "$err_msg $name -> $phy_dev_status{$stat}";
 		}
 	}
-	
+
+        if($sum == 0) {
+                print "PS: CRIT - No Power Supplies Online\n";
+                exit(3);
+        }
+
 	if($total_err != 0) {
 		$err_msg = ", $err_msg have an error";
 	} else {
