@@ -153,19 +153,18 @@ elsif($check_type eq "sessions") {
     my $R_firm = $snmp_session->get_request(-varbindlist => [$s_pa_total_active_sessions]);
     my $pa_total_active_sessions = "$R_firm->{$s_pa_total_active_sessions}";
 
-	$perf=" - Max Active Sessions :  $pa_max_sessions";
     
     if($pa_total_active_sessions > $crit ) {
-	$msg =  "CRITICAL: Total Active Sessions: $pa_total_active_sessions".$perf;
+	$msg =  "CRITICAL: Total Active Sessions: $pa_total_active_sessions - Max Active Sessions :  $pa_max_sessions";
 	$stat = 2;
     } elsif($pa_total_active_sessions > $warn ) {
-	$msg =  "WARNING: Total Active Sessions: $pa_total_active_sessions".$perf;
+	$msg =  "WARNING: Total Active Sessions: $pa_total_active_sessions - Max Active Sessions :  $pa_max_sessions";
 	$stat = 1;
     } else {
-	$msg =  "OK: Total Active Sessions: $pa_total_active_sessions".$perf;
+	$msg =  "OK: Total Active Sessions: $pa_total_active_sessions - Max Active Sessions :  $pa_max_sessions";
 	$stat = 0;
     }
-	$perf="";
+	$perf="sessions=$pa_total_active_sessions;$warn;$crit;0;$pa_max_sessions";
 }
 
 ### TCP SESSIONS ###
@@ -183,7 +182,7 @@ elsif($check_type eq "tcp_sessions") {
 	$msg =  "OK: TCP Active Sessions: $pa_total_tcp_active_sessions";
 	$stat = 0;
     }
-	$perf="";
+	$perf="tcp_sessions=$pa_total_tcp_active_sessions;$warn;$crit";
 }
 
 ### UDP SESSIONS ###
@@ -201,7 +200,7 @@ elsif($check_type eq "udp_sessions") {
 	$msg =  "OK: UDP Active Sessions: $pa_total_udp_active_sessions";
 	$stat = 0;
     }
-	$perf="";
+	$perf="udp_sessions=$pa_total_udp_active_sessions;$warn;$crit";
 }
 
 ### ICMP SESSIONS ###
@@ -221,7 +220,7 @@ elsif($check_type eq "icmp_sessions") {
 	$stat = 0;
 
     }
-	$perf="";
+	$perf="icmp_sessions=$pa_total_icmp_active_sessions;$warn;$crit";
 }
 
 ### firmware ###
@@ -251,7 +250,7 @@ elsif($check_type eq "cpu") {
 	$msg = "OK: Mgmt: $mgmt, Data: $data";
 	$stat = 0;
     }
-    $perf = "mgmt=$mgmt;data=$data;$warn;$crit";
+    $perf = "mgmt=$mgmt%;$warn;$crit data=$data%;$warn;$crit";
 
 ### Bad Syntax ###
 
